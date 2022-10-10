@@ -1,0 +1,275 @@
+html, body {
+  font-family: roboto;
+}
+ul, li {
+  list-style: none;
+  padding:0;
+  margin:0;
+  background: linear-gradient(#bd93f9, #282a36);
+}
+
+.container-mobile{
+width: 100%;
+margin-right: auto;
+margin-left: auto
+}
+.container {
+width: 100%;
+padding-right: 6px;
+padding-left: 6px;
+margin-right: auto;
+margin-left: auto
+}
+
+@media(min-width:576px) {
+.container {
+  max-width: 540px;
+}
+}
+
+@media(min-width:768px) {
+.container {
+  max-width: 720px
+}
+}
+
+@media(min-width:992px) {
+.container {
+  max-width: 960px
+}
+}
+
+@media(min-width:1200px) {
+.container {
+  max-width: 1100px
+}
+.container-mobile{
+  max-width: 960px
+}
+}
+@media print {
+body {
+  min-width: 992px!important
+}
+.container {
+  min-width: 992px!important
+}
+}
+.container-fluid {
+width: 100%;
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto
+}
+
+
+h1,h2,h3,h4,h5,.subtitle-1,.subtitle-2,.body-1,.body-2 {
+  margin-top: 0;
+  color:rgba(0,0,0,0.87)
+}
+h1{
+  font-size:96px;
+  font-weight:300;
+  letter-spacing:-.0156rem;
+  line-height:7rem;
+  text-transform: none
+}
+h2 {
+  font-size:60px;
+  font-weight:300;
+  letter-spacing:-.0083rem;
+  line-height: 4.5rem;
+  text-transform: none
+}
+h3 {
+  font-size:48px;
+  font-weight:400;
+  letter-spacing:0;
+  line-height: 3.5rem;
+  text-transform: none
+}
+h4 {
+  font-size:34px;
+  font-weight:400;
+  letter-spacing:.0073rem;
+  line-height: 2.5rem;
+  text-transform:none
+}
+h5 {
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.75rem;
+  text-transform: none
+}
+h6 {
+  font-size:20px;
+  font-weight: 500;
+  letter-spacing: .0075rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.subtitle-1 {
+  font-size:16px;
+  font-weight: 400;
+  letter-spacing: .0093rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.subtitle-2 {
+  font-size:14px;
+  font-weight: 500;
+  letter-spacing: .0071rem;
+  line-height: 1.25rem;
+  text-transform: none;
+}
+.body-1 {
+  font-size:16px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.body-2 {
+  font-size:14px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.25rem;
+  text-transform: none;
+  color: rgba(0,0,0, 0.7)
+}
+.body-3 {
+  font-size:16px;
+  font-weight: 400;
+}
+.f-12-400 {
+  font-size:12px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.25rem;
+  text-transform: none;
+  color: rgba(0,0,0, 0.6)
+}
+.f-14-400 {
+  font-size:15px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.25rem;
+}
+.f-14-600 {
+  font-size:15px;
+  font-weight: 600;
+  letter-spacing: .0178rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.f-16-300 {
+  font-size:17px;
+  font-weight: 300;
+  letter-spacing: .0178rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.f-16-400 {
+  font-size:17px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.f-16-600 {
+  font-size:17px;
+  font-weight: 600;
+  letter-spacing: .0178rem;
+  line-height: 1.5rem;
+  text-transform: none
+}
+.f-18-400 {
+  font-size:19px;
+  font-weight: 400;
+  letter-spacing: .0178rem;
+  line-height: 1.65rem;
+  text-transform: none
+}
+.f-18-600 {
+  font-size:19px;
+  font-weight: 600;
+  letter-spacing: .0178rem;
+  line-height: 1.65rem;
+  text-transform: none
+}
+.f-22-400 {
+  font-size:22px;
+  font-weight: 400;
+  letter-spacing: .0188rem;
+  line-height: 1.72rem;
+  text-transform: none
+}
+.f-24-400{
+  font-size:25px;
+  font-weight: 400;
+  letter-spacing: .02rem;
+  line-height: 1.8rem;
+  text-transform: none
+}
+.f-24-600{
+  font-size:25px;
+  letter-spacing: .02rem;
+  line-height: 1.8rem;
+  text-transform: none;
+  font-weight: 600;
+}
+.f-24-900{
+  font-size:25px;
+  letter-spacing: .02rem;
+  line-height: 1.8rem;
+  text-transform: none;
+  font-weight: 900;
+}
+.f-28-400{
+  font-size:28px;
+  font-weight: 400;
+  letter-spacing: .022rem;
+  line-height: 2.5rem;
+  text-transform: none
+}
+.f-28-600{
+  font-size:28px;
+  letter-spacing: .022rem;
+  line-height: 2.5rem;
+  text-transform: none;
+  font-weight: 600;
+}
+@media(max-width:576px) {
+  .f-24-400 {
+      font-size:18px;
+      letter-spacing: .02rem;
+      line-height: 1rem;
+  }
+.f-28-400 {
+  font-size:18px;
+      letter-spacing: .015rem;
+      line-height: 1.8rem;
+}
+}
+.f-28-600{
+  font-size:28px;
+  font-weight: 600;
+  letter-spacing: .022rem;
+  line-height: 2.5rem;
+  text-transform: none
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .0333rem;
+  line-height: 1rem;
+  text-transform: none;
+  color: rgba(0,0,0, 0.6)
+}
+
+.clearfix{
+clear:both
+}
