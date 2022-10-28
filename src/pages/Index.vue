@@ -6,7 +6,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import board from '../components/Board.vue'
+import board from '../components/newBoard/Board.vue'
 
 export default defineComponent({
   name: "PageIndex",

@@ -1,1 +1,16 @@
-// app global css in SCSS form
+body{
+  background: $dark;
+  color:#f3f3f3
+}
+a{
+  color: $accent
+}
+#chessground {
+  width: 700px;
+  height: 700px;
+}
+cg-board {
+  border-radius: 6px;
+  background-color: #bfd1dd;
+  background: url(../../public/bg/blue.svg);
+}
