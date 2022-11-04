@@ -1,6 +1,5 @@
 <template>
   <div ref="chessground" id="chessground"></div>
-  {{ puzzle }}
 </template>
 
 <script setup>
