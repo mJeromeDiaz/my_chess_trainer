@@ -1,35 +1,55 @@
 <template>
   <div ref="chessground" id="chessground"></div>
+  <br /><br />
+  {{ puzzleref }}
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted, toRef, computed } from "vue";
 import { Chessground } from "chessground";
 import { Chess, SQUARES } from "chess.js";
-
 import { toColor, isPromotion, toDests } from "../Utils.js";
 
 const props = defineProps({
-  puzzle: Object,
+  puzzle: {
+    type: Object,
+    default() {
+      return {
+        id: "00sHx",
+        fen: "q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17",
+        moves: "e8d7 a2e6 d7d8 f7f8",
+        rating: "1760",
+        ratingDeviation: "80",
+        popularity: "83",
+        nbPlays: "72",
+        themes: "mate mateIn2 middlegame",
+        gameUrl: "https://lichess.org/yyznGmXs/black#34",
+        openingFamily: "Italian_Game",
+        openingVariation: "Italian_Game_Classical_Variation",
+      };
+    },
+    required: true,
+  },
 });
-const puzzle = ref(props.puzzle);
-const puzzlez = ref(props.puzzle.value);
-console.log(puzzlez);
-const game = puzzle.value;
 
+// const puzzleref = toRef(props, "puzzle");
+const puzzleref = computed(() => props.puzzle);
 const chessground = ref(null);
-const fen = game.fen;
-const chessjs = new Chess(fen);
-
+let fen;
+let chessjs;
 let ground = "";
 
-const moveArray = game.moves.split(" ");
-let nbMoves = game.moves.length;
-let nbMovesRealised = 0;
-let result = ref();
+// const moveArray = puzzleref.value.moves.split(" ");
+// let nbMovesRealised = 0;
+// let result = ref();
+
 let promotions = [];
 
 onMounted(() => {
+  fen = puzzleref.value.fen;
+  console.log(puzzleref.value);
+  chessjs = new Chess(fen);
+
   load();
   ground.set({ fen: chessjs.fen() });
 });
@@ -37,8 +57,8 @@ onMounted(() => {
 function load() {
   ground = Chessground(chessground.value, {
     fen: chessjs.fen(),
-    orientation: "white",
-    turnColor: "white",
+    orientation: toColor(chessjs),
+    turnColor: toColor(chessjs),
     movable: {
       color: "white",
       free: false,
@@ -66,15 +86,15 @@ function load() {
 
 function playOtherSide() {
   return (orig, dest) => {
-    if (nbMoves === nbMovesRealised) {
-      result.value = true;
-    }
+    // if (puzzleref.value.moves.length === nbMovesRealised) {
+    //   result.value = true;
+    // }
 
-    if (moveArray[nbMovesRealised] !== orig + dest) {
-      result.value = false;
-      return;
-    }
-    nbMovesRealised++;
+    // if (moveArray[nbMovesRealised] !== orig + dest) {
+    //   result.value = false;
+    //   return;
+    // }
+    // nbMovesRealised++;
     if (isPromotion(orig, dest, promotions)) {
       chessjs.move({ from: orig, to: dest, promotion: "q" });
     } else {
@@ -90,17 +110,17 @@ function playOtherSide() {
       },
     });
 
-    chessjs.move(moveArray[nbMovesRealised]);
+    // chessjs.move(moveArray[nbMovesRealised]);
 
-    ground.set({
-      check: chessjs.isCheck(),
-      fen: chessjs.fen(),
-      movable: {
-        color: toColor(chessjs),
-        dests: toDests(chessjs, SQUARES),
-      },
-    });
-    nbMovesRealised++;
+    //   ground.set({
+    //     check: chessjs.isCheck(),
+    //     fen: chessjs.fen(),
+    //     movable: {
+    //       color: toColor(chessjs),
+    //       dests: toDests(chessjs, SQUARES),
+    //     },
+    //   });
+    //   nbMovesRealised++;
   };
 }
 </script>

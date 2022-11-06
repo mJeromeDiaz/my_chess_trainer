@@ -1,5 +1,4 @@
-import puzzle from 'src/components/Puzzle.vue'
-import Woodpecker from 'src/components/Woodpecker.vue';
+import puzzle from "src/components/Puzzle.vue";
 
 const routes = [
   {
@@ -7,9 +6,9 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/Index.vue") },
-      { path: "puzzle/:id", component: (puzzle) },
-      { path: "woodpecker", component: (Woodpecker) }
-    ]
+      { path: "puzzle/:id", component: puzzle },
+      { path: "woodpecker", component: () => import("pages/Woodpecker.vue") },
+    ],
   },
 
   // Always leave this as last one,
