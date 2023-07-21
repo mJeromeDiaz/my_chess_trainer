@@ -30,12 +30,15 @@ const puzzlesLichess = [
 let puzzle = ref('')
 
 onMounted(() => {
+  console.log('onMounted')
   puzzle.value = puzzlesLichess[route.params.id];
 })
 
 
 function updatePuzzle(){
   router.push({ name: 'puzzle', params: { id: parseInt(route.params.id) + 1 }})
+  puzzle.value = puzzlesLichess[route.params.id];
+
 }
 
 </script>

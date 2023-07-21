@@ -143,7 +143,7 @@ function load(){
 
   board = Chessground(chessground.value, {
     fen: puzzle.fen,
-    orientation: toColor(),
+    orientation: game._turn !== 'w' ? 'white' : 'black',
     turnColor: toColor(),
     highlight: {
       lastMove: true,
