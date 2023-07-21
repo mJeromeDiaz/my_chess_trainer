@@ -78,7 +78,7 @@ function load(){
     movable: {
       color: 'white',
       free: false,
-      dests: toDests(game),
+      dests: toDests(),
       showDests: true,
       rookCastle: true, // castle by moving the king to the rook
       animation: {
@@ -193,7 +193,6 @@ function isPromotion(orig, dest) {
 
   cg-board {
     border-radius: 6px;
-    background-color: #bfd1dd;
-    background: url(../../../public/bg/blue.svg);
+    background: #bfd1dd url(../../../public/bg/blue.svg);
   }
 </style>

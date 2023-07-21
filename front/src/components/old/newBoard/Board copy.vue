@@ -49,19 +49,12 @@ let ground = ''
 
 
 onMounted(() => {
-  // console.info({ beforeMove: game.fen() })
-  // console.info({ aftermove: game.fen() })
-  // console.log(game.ascii())
   console.log(game.ascii())
-
   load()
-  // config.value.fen = game.fen()
-  // console.log(game.history({ verbose: true }))
-  // console.log(game)
 })
 
 function load(){
-  console.log(game.moves({verbose:true}))
+  // console.log(game.moves({verbose:true}))
 
   ground = Chessground(chessground.value, {
     fen: game.fen(),
@@ -70,7 +63,7 @@ function load(){
     movable: {
       color: 'white',
       free: false,
-      dests: toDests(game),
+      dests: toDests(),
       showDests: true,
       rookCastle: true, // castle by moving the king to the rook
       animation: {
@@ -110,7 +103,7 @@ function playOtherSide () {
         dests: toDests(),
       }
     })
-    console.log(game.ascii())
+    // console.log(game.ascii())
 
   }
 }
@@ -126,10 +119,7 @@ function toDests() {
 }
 
 let promotions = []
-
-
 function toColor() {
-
   let moves = game.moves({verbose: true})
   for (let move of moves) {
     if (move.promotion) {
@@ -173,7 +163,6 @@ function isPromotion(orig, dest) {
   }
   cg-board {
     border-radius: 6px;
-    background-color: #bfd1dd;
-    background: url(../../../public/bg/blue.svg);
+    background: #bfd1dd, url(../../../public/bg/blue.svg);
   }
 </style>
