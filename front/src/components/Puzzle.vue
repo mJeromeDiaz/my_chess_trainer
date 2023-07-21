@@ -65,19 +65,29 @@ const moveIteration = ref(0)
 let error = ref(false)
 const waintingTime = 600
 
+
+function playSound() {
+  let file = game._history[moveIteration.value].move.captured ? 'sound/Capture.mp3' : 'sound/Move.mp3'
+  new Audio(file).play()
+}
+
+function move(origin, dest) {
+  board.move(origin, dest);
+
+  if (isPromotion(origin, dest)) {
+    game.move({from: origin, to: dest, promotion: 'q'})
+  } else {
+    game.move({from: origin, to: dest })
+  }
+  playSound()
+}
+
 function robotTurn(){
     let origin = moveArray[moveIteration.value].slice(0, 2)
     let dest = moveArray[moveIteration.value].slice(2, 4)
-    console.log('robot : ', origin, dest)
+
     setTimeout(() => {
-
-      board.move(origin, dest);
-
-      if (isPromotion(origin, dest)) {
-        game.move({from: origin, to: dest, promotion: 'q'})
-      } else {
-        game.move({from: origin, to: dest })
-      }
+      move(origin, dest)
 
       board.set({
         turnColor: toColor(),
@@ -95,22 +105,17 @@ function robotTurn(){
 
 function humanTurn(){
   return (origin, dest) => {
-    console.log('human : ', origin, dest)
 
-    board.move(origin, dest);
+    move(origin, dest)
 
-    if (isPromotion(origin, dest)) {
-      game.move({from: origin, to: dest, promotion: 'q'})
-    } else {
-      game.move({from: origin, to: dest })
-    }
     if(origin === moveArray[moveIteration.value].slice(0, 2) && dest === moveArray[moveIteration.value].slice(2, 4)){
 
       moveIteration.value = moveIteration.value + 1
 
       if(moveIteration.value === moveArray.length) {
-        console.log('GOGOGOGO')
         emit('updatePuzzle')
+        let audio = new Audio('sound/puzzleIsDone.mp3')
+        audio.play()
       } else {
 
         board.set({
@@ -118,12 +123,14 @@ function humanTurn(){
             movable: {
               dests: toDests(),
               events: {
-                after: robotTurn()
+                after: robotTurn(),
               }
             }
           })
       }
     } else {
+      let audio = new Audio('sound/puzzleIsMissed.mp3')
+      audio.play()
       error.value = true
     }
   }
@@ -158,7 +165,7 @@ function load(){
         }
       }
     })
-    robotTurn(moveArray[moveIteration.value].slice(0, 2), moveArray[moveIteration.value].slice(2, 4))
+    robotTurn()
 }
 
 function toDests() {
