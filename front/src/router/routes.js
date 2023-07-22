@@ -1,5 +1,3 @@
-import puzzle from "src/components/Puzzle.vue";
-
 const routes = [
   {
     path: "/",

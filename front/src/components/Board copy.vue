@@ -9,14 +9,9 @@
       <div>url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
       <div>url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
       <div> fen : {{ puzzle.fen }}</div>
-      <q-banner inline-actions class="text-white bg-red" v-if="error">
-        Perdu !
-        <template v-slot:action>
-          <q-btn flat color="white" label="Retry ?" @click="load()" />
-          <q-btn flat color="white" label="Voir la solution" @click="undo()"/>
-          <q-btn flat color="white" label="Passer" />
-        </template>
-      </q-banner>
+      <div>{{  error  }}</div>
+      <div>{{  endOfPuzzle  }}</div>
+
     </div>
   </div>
 </template>
@@ -35,59 +30,41 @@ const chessground = ref(null);
 let game = ''
 let board = ''
 
-let props = defineProps({
-  puzzleLichess: {
-    type: String,
-    default: '"00sJb,Q1b2r1k/p2np2p/5bp1/q7/5P2/4B3/PPP3PP/2KR1B1R w - - 1 17,d1d7 a5e1 d7d1 e1e3 c1b1 e3b6,2235,76,97,64,advantage fork long,https://lichess.org/kiuvTFoE#33,Sicilian_Defense,Sicilian_Defense_Dragon_Variation"'
-  }
-})
+const puzzleLichess = "00sJb,Q1b2r1k/p2np2p/5bp1/q7/5P2/4B3/PPP3PP/2KR1B1R w - - 1 17,d1d7 a5e1 d7d1 e1e3 c1b1 e3b6,2235,76,97,64,advantage fork long,https://lichess.org/kiuvTFoE#33,Sicilian_Defense,Sicilian_Defense_Dragon_Variation"
 
-let emit = defineEmits(['updatePuzzle'])
+const splited = puzzleLichess.split(',');
+let orientation = 'black'
+const puzzle = {
+  id: splited[0],
+  fen: splited[1],
+  moves: splited[2],
+  rating: splited[3],
+  ratingDeviation: splited[4],
+  popularity: splited[5],
+  nbPlays: splited[6],
+  themes: splited[7],
+  gameUrl: splited[8],
+  openingFamily: splited[9],
+  openingVariation: splited[10]
+}
 
-const splited = ref(props.puzzleLichess.split(','));
-const puzzle = ref({
-  id: splited.value[0],
-  fen: splited.value[1],
-  moves: splited.value[2],
-  rating: splited.value[3],
-  ratingDeviation: splited.value[4],
-  popularity: splited.value[5],
-  nbPlays: splited.value[6],
-  themes: splited.value[7],
-  gameUrl: splited.value[8],
-  openingFamily: splited.value[9],
-  openingVariation: splited.value[10]
-})
-
-const moveArray  = puzzle.value.moves.split(' ')
+const fen = puzzle.fen
+const moveArray  = puzzle.moves.split(' ')
 const moveIteration = ref(0)
+let endOfPuzzle = ref(false)
 let error = ref(false)
 const waintingTime = 600
 
-
-function playSound() {
-  let file = game._history[moveIteration.value].move.captured ? 'sound/Capture.mp3' : 'sound/Move.mp3'
-  new Audio(file).play()
-}
-
-function move(origin, dest) {
-  board.move(origin, dest);
-
-  if (isPromotion(origin, dest)) {
-    game.move({from: origin, to: dest, promotion: 'q'})
-  } else {
-    game.move({from: origin, to: dest })
-  }
-  playSound()
-  console.log(game)
-}
-
-function robotTurn(){
-    let origin = moveArray[moveIteration.value].slice(0, 2)
-    let dest = moveArray[moveIteration.value].slice(2, 4)
-
+function robotTurn(origin, dest){
     setTimeout(() => {
-      move(origin, dest)
+
+      board.move(origin, dest);
+
+      if (isPromotion(origin, dest)) {
+        game.move({from: origin, to: dest, promotion: 'q'})
+      } else {
+        game.move({from: origin, to: dest })
+      }
 
       board.set({
         turnColor: toColor(),
@@ -105,49 +82,46 @@ function robotTurn(){
 
 function humanTurn(){
   return (origin, dest) => {
+    board.move(origin, dest);
 
-    move(origin, dest)
+    if (isPromotion(origin, dest)) {
+      game.move({from: origin, to: dest, promotion: 'q'})
+    } else {
+      game.move({from: origin, to: dest })
+    }
 
-    if(origin === moveArray[moveIteration.value].slice(0, 2) && dest === moveArray[moveIteration.value].slice(2, 4)){
+    if(dest === moveArray[moveIteration.value].slice(2, 4)){
 
       moveIteration.value = moveIteration.value + 1
 
-      if(moveIteration.value === moveArray.length) {
-        emit('updatePuzzle')
-        let audio = new Audio('sound/puzzleIsDone.mp3')
-        audio.play()
-      } else {
-
-        board.set({
-            turnColor: toColor(),
-            movable: {
-              dests: toDests(),
-              events: {
-                after: robotTurn(),
-              }
+    if(moveIteration.value === moveArray.length) {
+      endOfPuzzle.value = true
+    } else {
+      board.set({
+          turnColor: toColor(),
+          movable: {
+            dests: toDests(),
+            events: {
+              after: robotTurn(moveArray[moveIteration.value].slice(0, 2), moveArray[moveIteration.value].slice(2, 4))
             }
-          })
+          }
+        })
       }
     } else {
-      let audio = new Audio('sound/puzzleIsMissed.mp3')
-      audio.play()
       error.value = true
+      endOfPuzzle.value = true
     }
   }
 }
 
-function reset(){
-  game = new Chess(puzzle.value.fen)
-  moveIteration.value = 0
-  error.value = false
-}
 
 
 function load(){
-  reset()
+  game = new Chess(fen)
+
   board = Chessground(chessground.value, {
-    fen: puzzle.value.fen,
-    orientation: game._turn !== 'w' ? 'white' : 'black',
+    fen: game.fen(),
+    orientation: orientation,
     turnColor: toColor(),
     highlight: {
       lastMove: true,
@@ -169,7 +143,7 @@ function load(){
         }
       }
     })
-    robotTurn()
+    robotTurn(moveArray[moveIteration.value].slice(0, 2), moveArray[moveIteration.value].slice(2, 4))
 }
 
 function toDests() {
