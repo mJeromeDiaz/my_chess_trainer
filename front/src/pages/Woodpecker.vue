@@ -19,11 +19,11 @@
           </div>
         </div>
 
-        <div>Moves : {{ puzzle.moves }}</div>
+        <!--<div>Moves : {{ puzzle.moves }}</div>-->
         <div>Id : {{ puzzle.id }}</div>
         <div>Url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
         <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <div>Fen : {{ puzzle.fen }}</div>
+        <!--<div>Fen : {{ puzzle.fen }}</div>-->
         <div v-if="solution || error" class="q-mt-md">
           <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
             <template v-slot:action>
@@ -52,6 +52,7 @@ import { Chessground } from 'chessground';
 import '../../node_modules/chessground/assets/chessground.base.css';
 import '../../node_modules/chessground/assets/chessground.brown.css';
 import '../../node_modules/chessground/assets/chessground.cburnett.css';
+import axios from 'axios';
 
 /**
  * Init varaibles
@@ -64,12 +65,7 @@ let board = ''
  * Puzzles life
  */
 // a récupérer de l'api
-let puzzles = ref([
-  "00sJ9,r3r1k1/p4ppp/2p2n2/1p6/3P1qb1/2NQR3/PPB2PP1/R1B3K1 w - - 5 18,e3g3 e8e1 g1h2 e1c1 a1c1 f4h6 h2g1 h6c1,2671,105,87,325,advantage attraction fork middlegame sacrifice veryLong,https://lichess.org/gyFeQsOE#35,French_Defense,French_Defense_Exchange_Variation",
-  "00sJb,Q1b2r1k/p2np2p/5bp1/q7/5P2/4B3/PPP3PP/2KR1B1R w - - 1 17,d1d7 a5e1 d7d1 e1e3 c1b1 e3b6,2235,76,97,64,advantage fork long,https://lichess.org/kiuvTFoE#33,Sicilian_Defense,Sicilian_Defense_Dragon_Variation",
-  "00sHx,q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8,1760,80,83,72,mate mateIn2 middlegame short,https://lichess.org/yyznGmXs/black#34,Italian_Game,Italian_Game_Classical_Variation",
-  "00sO1,1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31,b8c7 e1a5 b7b6 f1d1,998,85,94,293,advantage discoveredAttack master middlegame short,https://lichess.org/vsfFkG0s/black#62",
-])
+let puzzles = ref([])
 let puzzleIteration = ref(0)
 let puzzle = ref('')
 
@@ -79,28 +75,15 @@ let puzzle = ref('')
 let moveIteration = ref(0)
 let moveArray  = ref([])
 let error = ref(false)
-let waintingTime = 600
+let waintingTime = 200
 
 function reset() {
   moveIteration.value = 0
   solution.value = false
   error.value = false
 
-  let splited = puzzles.value[puzzleIteration.value].split(',');
 
-  puzzle.value = {
-    id: splited[0],
-    fen: splited[1],
-    moves: splited[2],
-    rating: splited[3],
-    ratingDeviation: splited[4],
-    popularity: splited[5],
-    nbPlays: splited[6],
-    themes: splited[7],
-    gameUrl: splited[8],
-    openingFamily: splited[9],
-    openingVariation: splited[10]
-  }
+  puzzle.value = puzzles.value[puzzleIteration.value]
   moveArray.value = puzzle.value.moves.split(' ')
   game = new Chess(puzzle.value.fen)
   timer(document.getElementById("timer"), 0)
@@ -317,11 +300,17 @@ function timer(where, tps){
   }, 1000)
 }
 
-
+function getPuzzles() {
+  return axios.get('https://localhost:8000/api/puzzles?page=1').then(response=>{
+    puzzles.value = response.data['hydra:member'] || response.data
+  })
+}
 
 onMounted(() => {
-  load()
-  timer(document.getElementById("globalTimer"), 0)
+  getPuzzles().then(()=>{
+    load()
+    timer(document.getElementById("globalTimer"), 0)
+  })
 })
 
 

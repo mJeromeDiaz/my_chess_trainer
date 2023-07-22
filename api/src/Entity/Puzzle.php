@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
-#[ApiResource]
+#[ApiResource(paginationMaximumItemsPerPage: 100)]
 class Puzzle
 {
     #[ORM\Id]
