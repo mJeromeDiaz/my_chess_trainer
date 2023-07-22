@@ -8,19 +8,27 @@
       </section>
 
       <section id="sidebar" class="text-left">
-        <div>moves : {{ puzzle.moves }}</div>
-        <div>id : {{ puzzle.id }}</div>
-        <div>url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <div>url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <div> fen : {{ puzzle.fen }}</div>
-        <q-banner inline-actions class="text-white bg-red" v-if="error">
-          Perdu !
-          <template v-slot:action>
-            <q-btn flat color="white" label="Retry ?" @click="load()" />
-            <q-btn flat color="white" label="Voir la solution" @click="lookAtTheSolution()"/>
-            <q-btn flat color="white" label="Passer" />
-          </template>
-        </q-banner>
+        <div>Moves : {{ puzzle.moves }}</div>
+        <div>Id : {{ puzzle.id }}</div>
+        <div>Url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
+        <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
+        <div>Fen : {{ puzzle.fen }}</div>
+        <div v-if="solution || error" class="q-mt-md">
+          <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
+            <template v-slot:action>
+              <div v-if="error">
+                <q-btn flat color="white" label="Réessayer" @click="load()" />
+                <q-btn flat color="white" label="Voir la solution" @click="lookAtTheSolution()"/>
+                <q-btn flat color="white" label="Passer" @click="next()"/>
+              </div>
+              <div v-if="solution">
+                <q-btn flat color="white" label="Réessayer" @click="load()" />
+                <q-btn flat color="white" label="Revoir la solution" @click="lookAtTheSolution()"/>
+                <q-btn flat color="white" label="Passer" @click="next()" v-if="puzzleIteration === puzzles.length"/>
+              </div>
+            </template>
+          </q-banner>
+        </div>
       </section>
     </div>
   </div>
@@ -46,9 +54,9 @@ let board = ''
  */
 // a récupérer de l'api
 let puzzles = ref([
-  "00sHx,q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8,1760,80,83,72,mate mateIn2 middlegame short,https://lichess.org/yyznGmXs/black#34,Italian_Game,Italian_Game_Classical_Variation",
   "00sJ9,r3r1k1/p4ppp/2p2n2/1p6/3P1qb1/2NQR3/PPB2PP1/R1B3K1 w - - 5 18,e3g3 e8e1 g1h2 e1c1 a1c1 f4h6 h2g1 h6c1,2671,105,87,325,advantage attraction fork middlegame sacrifice veryLong,https://lichess.org/gyFeQsOE#35,French_Defense,French_Defense_Exchange_Variation",
   "00sJb,Q1b2r1k/p2np2p/5bp1/q7/5P2/4B3/PPP3PP/2KR1B1R w - - 1 17,d1d7 a5e1 d7d1 e1e3 c1b1 e3b6,2235,76,97,64,advantage fork long,https://lichess.org/kiuvTFoE#33,Sicilian_Defense,Sicilian_Defense_Dragon_Variation",
+  "00sHx,q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8,1760,80,83,72,mate mateIn2 middlegame short,https://lichess.org/yyznGmXs/black#34,Italian_Game,Italian_Game_Classical_Variation",
   "00sO1,1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31,b8c7 e1a5 b7b6 f1d1,998,85,94,293,advantage discoveredAttack master middlegame short,https://lichess.org/vsfFkG0s/black#62",
 ])
 let puzzleIteration = ref(0)
@@ -64,8 +72,11 @@ let waintingTime = 600
 
 function reset() {
   moveIteration.value = 0
+  solution.value = false
   error.value = false
+
   let splited = puzzles.value[puzzleIteration.value].split(',');
+
   puzzle.value = {
     id: splited[0],
     fen: splited[1],
@@ -85,7 +96,7 @@ function reset() {
 
 function load(){
   reset()
-  board = Chessground(chessground.value, {
+  board = new Chessground(chessground.value, {
     fen: puzzle.value.fen,
     orientation: game._turn !== 'w' ? 'white' : 'black',
     turnColor: game._turn === 'w' ? 'white' : 'black',
@@ -118,6 +129,7 @@ function playSound() {
 }
 
 function move(origin, dest) {
+  console.log(origin, dest)
   board.move(origin, dest);
 
   if (isPromotion(origin, dest)) {
@@ -145,8 +157,14 @@ function robotTurn(){
         }
       })
       moveIteration.value = moveIteration.value + 1
-
     }, waintingTime);
+}
+
+function next(){
+  error.value = false
+  solution.value = false
+  puzzleIteration.value = puzzleIteration.value + 1
+  load()
 }
 
 function humanTurn(){
@@ -192,9 +210,11 @@ function humanTurn(){
   }
 }
 
-
+let solution = ref(false)
 function lookAtTheSolution(){
     reset()
+    error.value = false
+    solution.value = true
 
     board = Chessground(chessground.value, {
     fen: puzzle.value.fen,
@@ -220,6 +240,7 @@ function lookAtTheSolution(){
         }
       }
     })
+
 
     moveArray.value.forEach((m, i)=>{
       setTimeout(() => {
@@ -282,8 +303,11 @@ onMounted(() => {
   -webkit-text-fill-color: transparent;
   font-weight: 900;
 }
-  cg-board {
-    border-radius: 6px;
-    background: #bfd1dd url(../../public/bg/blue.svg);
-  }
+.bg{
+  background: -webkit-linear-gradient(315deg,#42d392 25%, $primary);
+}
+cg-board {
+  border-radius: 6px;
+  background: #bfd1dd url(../../public/bg/blue.svg);
+}
 </style>
