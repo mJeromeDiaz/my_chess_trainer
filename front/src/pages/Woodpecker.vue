@@ -8,13 +8,15 @@
       </section>
 
       <section id="sidebar" class="text-left">
+        <div class="text-h6">
 
-        <div>{{ puzzleIteration }} / {{ puzzles.length }}</div>
-        <div class="h6">Global timer :
-          <span id="globalTimer"></span>
-        </div>
-        <div class="h6">puzzle timer :
-          <span id="timer"></span>
+          <div>{{ puzzleIteration }} / {{ puzzles.length }} puzzles</div>
+          <div class="">Global timer :
+            <span id="globalTimer"></span>
+          </div>
+          <div class="">puzzle timer :
+            <span id="timer"></span>
+          </div>
         </div>
 
         <div>Moves : {{ puzzle.moves }}</div>
@@ -139,7 +141,6 @@ function playSound() {
 }
 
 function move(origin, dest) {
-  console.log(origin, dest)
   board.move(origin, dest);
 
   if (isPromotion(origin, dest)) {
@@ -303,10 +304,8 @@ function isPromotion(orig, dest) {
 
 function timer(where, tps){
   where.innerText = '00:00'
-  let clock
-  clearInterval(clock);
 
-  clock = setInterval(() => {
+  setInterval(() => {
     let minutes = parseInt(tps / 60, 10)
     let secondes = parseInt(tps % 60, 10)
 
