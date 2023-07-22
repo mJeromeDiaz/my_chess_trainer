@@ -1,5 +1,11 @@
+@font-face {
+  font-family: inter;
+  src: url(./fonts/inter.ttf);
+}
+
 html, body {
-  font-family: roboto;
+  font-family: inter;
+
 }
 
 ul, li {

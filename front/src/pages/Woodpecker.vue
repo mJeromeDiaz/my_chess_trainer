@@ -1,5 +1,6 @@
 <template>
   <div class="container-semi-fluid flex flex-center" style="height: 100vh">
+    <h1 class="title q-mb-none">WoodPecker</h1>
     <div class="row q-gutter-md">
 
       <section id="board" class="">
@@ -273,6 +274,14 @@ onMounted(() => {
 
 </script>
 <style lang="scss">
+.title{
+  background: -webkit-linear-gradient(315deg,#42d392 25%, $primary);
+  background-clip: border-box;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+}
   cg-board {
     border-radius: 6px;
     background: #bfd1dd url(../../public/bg/blue.svg);
