@@ -7,8 +7,9 @@
         <div ref="chessground" id="chessground"></div>
       </section>
 
-      <section id="sidebar" class="text-left">
-        <div class="text-h6">
+
+        <section id="sidebar" class="text-left">
+          <div class="text-h6">
 
           <div>{{ puzzleIteration }} / {{ puzzles.length }} puzzles</div>
           <div class="">Global timer :
