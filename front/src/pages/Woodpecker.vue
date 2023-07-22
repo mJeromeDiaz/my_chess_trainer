@@ -8,6 +8,15 @@
       </section>
 
       <section id="sidebar" class="text-left">
+
+        <div>{{ puzzleIteration }} / {{ puzzles.length }}</div>
+        <div class="h6">Global timer :
+          <span id="globalTimer"></span>
+        </div>
+        <div class="h6">puzzle timer :
+          <span id="timer"></span>
+        </div>
+
         <div>Moves : {{ puzzle.moves }}</div>
         <div>Id : {{ puzzle.id }}</div>
         <div>Url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
@@ -92,6 +101,7 @@ function reset() {
   }
   moveArray.value = puzzle.value.moves.split(' ')
   game = new Chess(puzzle.value.fen)
+  timer(document.getElementById("timer"), 0)
 }
 
 function load(){
@@ -288,8 +298,31 @@ function isPromotion(orig, dest) {
 }
 
 
+
+
+
+function timer(where, tps){
+  where.innerText = '00:00'
+  let clock
+  clearInterval(clock);
+
+  clock = setInterval(() => {
+    let minutes = parseInt(tps / 60, 10)
+    let secondes = parseInt(tps % 60, 10)
+
+    minutes = minutes < 10 ? "0" + minutes : minutes
+    secondes = secondes < 10 ? "0" + secondes : secondes
+
+    where.innerText = `${minutes}:${secondes}`
+    tps = tps + 1
+  }, 1000)
+}
+
+
+
 onMounted(() => {
   load()
+  timer(document.getElementById("globalTimer"), 0)
 })
 
 
