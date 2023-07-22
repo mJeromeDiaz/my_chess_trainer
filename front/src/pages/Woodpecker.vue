@@ -1,30 +1,23 @@
 <template>
   <div class="container-semi-fluid flex flex-center" style="height: 100vh">
-    <h1 class="title q-mb-none">WoodPecker</h1>
+    <h2 class="title q-mb-none">WoodPecker</h2>
     <div class="row q-gutter-md">
 
-      <section id="board" class="">
+      <section id="board" class="" >
         <div ref="chessground" id="chessground"></div>
       </section>
 
 
         <section id="sidebar" class="text-left">
-          <div class="text-h6">
-
-          <div>{{ puzzleIteration }} / {{ puzzles.length }} puzzles</div>
-          <div class="">Global timer :
-            <span id="globalTimer"></span>
-          </div>
-          <div class="">puzzle timer :
-            <span id="timer"></span>
+          <div class="text-h5">{{ puzzleIteration }} / {{ puzzles.length }} puzzles</div>
+          <div class="text-h1">
+            <div class=""><span id="globalTimer"></span>
           </div>
         </div>
 
-        <!--<div>Moves : {{ puzzle.moves }}</div>-->
         <div>Id : {{ puzzle.id }}</div>
         <div>Url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
         <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <!--<div>Fen : {{ puzzle.fen }}</div>-->
         <div v-if="solution || error" class="q-mt-md">
           <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
             <template v-slot:action>
@@ -87,7 +80,7 @@ function reset() {
   puzzle.value = puzzles.value[puzzleIteration.value]
   moveArray.value = puzzle.value.moves.split(' ')
   game = new Chess(puzzle.value.fen)
-  timer(document.getElementById("timer"), 0)
+  // timer(document.getElementById("timer"), 0)
 }
 
 function load(){
@@ -317,12 +310,13 @@ onMounted(() => {
 
 </script>
 <style lang="scss">
-.title{
-  background: -webkit-linear-gradient(315deg,#42d392 25%, $primary);
-  background-clip: border-box;
+.title {
+  background: linear-gradient(to right, $secondary, $primary);
+  // background: linear-gradient(to right, rgb(248, 99, 189), rgb(71, 133, 254));
+  // background: linear-gradient(to right, #42d392, $primary);
+  // background: linear-gradient(315deg,#42d392 25%, $primary);
   background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: transparent;
   font-weight: 900;
 }
 .bg{

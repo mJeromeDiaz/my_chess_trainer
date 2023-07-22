@@ -3,14 +3,15 @@ body{
   background: $dark;
   color:#f3f3f3;
 }
-
-
 a{
   color: $accent
 }
-#chessground {
+#board, #chessground {
   width: 750px;
   height: 750px;
+}
+#sidebar {
+  width: 400px
 }
 cg-board {
   border-radius: 6px;
