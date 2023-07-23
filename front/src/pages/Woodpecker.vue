@@ -15,8 +15,8 @@
           </div>
         </div>
 
-        <div>Id : {{ puzzle.id }}</div>
-        <div>Url puzzle : <a :href="'https://lichess.org/training/'+ puzzle.id" title="lien vers le puzzle">lien vers le puzzle</a></div>
+        <div>Id : {{ puzzle.lichessId }}</div>
+        <div>Url puzzle : <a target="_blank" :href="'https://lichess.org/training/'+ puzzle.lichessId" title="lien vers le puzzle">lien vers le puzzle</a></div>
         <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
         <div v-if="solution || error" class="q-mt-md">
           <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
