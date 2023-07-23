@@ -23,12 +23,12 @@
             <template v-slot:action>
               <div v-if="error">
                 <q-btn flat color="white" label="Réessayer" @click="load()" />
-                <q-btn flat color="white" label="Voir la solution" @click="lookAtTheSolution()"/>
+                <q-btn flat color="white" label="Voir la solution" @click="lookSolution()"/>
                 <q-btn flat color="white" label="Passer" @click="next()"/>
               </div>
               <div v-if="solution">
                 <q-btn flat color="white" label="Réessayer" @click="load()" />
-                <q-btn flat color="white" label="Revoir la solution" @click="lookAtTheSolution()"/>
+                <q-btn flat color="white" label="Revoir la solution" @click="lookSolution()"/>
                 <q-btn flat color="white" label="Passer" @click="next()" v-if="puzzleIteration === puzzles.length"/>
               </div>
             </template>
@@ -199,7 +199,7 @@ function humanTurn(){
 }
 
 let solution = ref(false)
-function lookAtTheSolution(){
+function lookSolution(){
     reset()
     error.value = false
     solution.value = true
