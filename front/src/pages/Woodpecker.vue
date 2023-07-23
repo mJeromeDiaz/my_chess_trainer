@@ -310,18 +310,8 @@ onMounted(() => {
 
 </script>
 <style lang="scss">
-.title {
-  background: linear-gradient(to right, $secondary, $primary);
-  // background: linear-gradient(to right, rgb(248, 99, 189), rgb(71, 133, 254));
-  // background: linear-gradient(to right, #42d392, $primary);
-  // background: linear-gradient(315deg,#42d392 25%, $primary);
-  background-clip: text;
-  color: transparent;
-  font-weight: 900;
-}
-.bg{
-  background: -webkit-linear-gradient(315deg,#42d392 25%, $primary);
-}
+
+
 cg-board {
   border-radius: 6px;
   background: #bfd1dd url(../../public/bg/blue.svg);

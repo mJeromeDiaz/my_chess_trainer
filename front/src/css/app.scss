@@ -18,4 +18,15 @@ cg-board {
   background-color: #bfd1dd;
   background: url(../../public/bg/blue.svg);
 }
-
+.bg-g{
+  background: -webkit-linear-gradient(315deg,$secondary 25%, $primary);
+}
+.bg{
+  background: -webkit-linear-gradient(210deg, $secondary 25%, $primary);
+}
+.title {
+  background: linear-gradient(to right, $secondary, $primary);
+  background-clip: text;
+  color: transparent;
+  font-weight: 900;
+}
