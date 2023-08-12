@@ -310,7 +310,7 @@ function timer(where, tps){
 }
 
 function getPuzzles() {
-  return axios.get('https://localhost:8000/api/puzzles?page=1').then(response=>{
+  return axios.get(`${process.env.API_URL}puzzles?page=1`).then(response=>{
     puzzles.value = response.data['hydra:member'] || response.data
     store.puzzles = response.data['hydra:member'] || response.data
     store.startedAt = new Date()
@@ -327,8 +327,6 @@ onMounted(() => {
 
 </script>
 <style lang="scss">
-
-
 cg-board {
   border-radius: 6px;
   background: #bfd1dd url(../../public/bg/blue.svg);
