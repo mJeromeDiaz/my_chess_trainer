@@ -8,4 +8,4 @@ export const woodpeckerStore = defineStore('woodpecker', {
   },
   actions: {
   }
-)
+})
