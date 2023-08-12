@@ -1,5 +1,5 @@
 <template>
-  <div class="container-semi-fluid flex flex-center" style="height: 100vh">
+  <div class="container-semi-fluid column" style="height: 100vh">
     <h2 class="title q-mb-none">WoodPecker</h2>
     <div class="row q-gutter-md">
 
@@ -13,8 +13,11 @@
           <div class="text-h1">
             <div class=""><span id="globalTimer"></span>
           </div>
-        </div>
 
+        </div>
+        <div>
+            <successGraph></successGraph>
+        </div>
         <div>Id : {{ puzzle.lichessId }}</div>
         <div>Url puzzle : <a target="_blank" :href="'https://lichess.org/training/'+ puzzle.lichessId" title="lien vers le puzzle">lien vers le puzzle</a></div>
         <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
@@ -47,6 +50,10 @@ import '../../node_modules/chessground/assets/chessground.base.css';
 import '../../node_modules/chessground/assets/chessground.brown.css';
 import '../../node_modules/chessground/assets/chessground.cburnett.css';
 import axios from 'axios';
+import successGraph from './woodpecker/successGraph.vue'
+
+import { woodpeckerStore } from '../stores/woodpecker.js'
+const store = woodpeckerStore()
 
 /**
  * Init varaibles
@@ -174,7 +181,11 @@ function humanTurn(){
 
 
         } else {
+          let storePuzzle = store.puzzles.find(el => el.id = puzzle.value.id)
           // le puzzle est Correct
+          if(storePuzzle?.isSuccessful !== false) {
+            storePuzzle.isSuccessful = true
+          }
           let audio = new Audio('sound/puzzleIsDone.mp3')
           audio.play()
 
@@ -193,6 +204,8 @@ function humanTurn(){
         })
       }
     } else {
+      // le puzzle est raté
+      store.puzzles.find(el => el.id = puzzle.value.id).isSuccessful = false
       let audio = new Audio('sound/puzzleIsMissed.mp3')
       audio.play()
       error.value = true
@@ -299,6 +312,8 @@ function timer(where, tps){
 function getPuzzles() {
   return axios.get('https://localhost:8000/api/puzzles?page=1').then(response=>{
     puzzles.value = response.data['hydra:member'] || response.data
+    store.puzzles = response.data['hydra:member'] || response.data
+    store.startedAt = new Date()
   })
 }
 
