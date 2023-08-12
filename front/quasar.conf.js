@@ -21,21 +21,14 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ["i18n", "axios"],
+    boot: ["i18n", "axios", 'pinia'],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss", "bootstrap.css"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v5',
       "fontawesome-v5",
-      // 'eva-icons',
-      // 'themify',
-      // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
       "roboto-font", // optional, you are not bound to it
       "material-icons", // optional, you are not bound to it
     ],
@@ -43,7 +36,13 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "hash", // available values: 'hash', 'history'
-
+      env: ctx.dev ? {
+        API_URL: 'https://localhost:8000/api/',
+        URL: 'https://localhost:8000/'
+      } : {
+        API_URL: 'https://localhost:8000/api/',
+        URL: 'https://localhost:8000/'
+      },
       // transpile: false,
       // publicPath: '/',
 
@@ -94,7 +93,10 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: [
+        'Notify',
+        'Loading'
+      ],
     },
 
     // animations: 'all', // --- includes all animations
