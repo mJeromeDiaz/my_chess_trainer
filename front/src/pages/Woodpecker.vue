@@ -171,8 +171,10 @@ function humanTurn(){
           // la session est terminée
           let audio = new Audio('sound/successfullyEndSession.mp3')
           audio.play()
+
+
         } else {
-          // la le puzzle est Correct
+          // le puzzle est Correct
           let audio = new Audio('sound/puzzleIsDone.mp3')
           audio.play()
 

@@ -1,13 +1,12 @@
-@font-face {
-  font-family: inter;
-  src: url(./fonts/inter.ttf);
-}
-
 html, body {
-  font-family: inter;
-
+  font-family: roboto;
 }
-
+.br-5{
+  border-radius: 5px
+}
+.br-10{
+  border-radius: 10px
+}
 ul, li {
   list-style: none;
   padding:0;
@@ -43,22 +42,20 @@ padding-left: 6px;
 margin-right: auto;
 margin-left: auto
 }
-.container-semi-fluid{
-  width: 80%;
-padding-right: 6px;
-padding-left: 6px;
-margin-right: auto;
-margin-left: auto
-}
+
 @media(min-width:576px) {
 .container {
   max-width: 540px;
 }
+  .container-fluid {
+      padding: 5px
+  }
+
 }
 
 @media(min-width:768px) {
 .container {
-  max-width: 720px
+  max-width: 760px
 }
 }
 
@@ -66,6 +63,13 @@ margin-left: auto
 .container {
   max-width: 960px
 }
+  .container-fluid {
+      padding: 15px
+  }
+  .container-large{
+      padding-left: 10px;
+      padding-right: 10px
+  }
 }
 
 @media(min-width:1200px) {
@@ -75,6 +79,7 @@ margin-left: auto
 .container-mobile{
   max-width: 960px
 }
+
 }
 @media print {
 body {
@@ -84,6 +89,7 @@ body {
   min-width: 992px!important
 }
 }
+
 .container-fluid {
 width: 100%;
 padding-right: 15px;
@@ -98,21 +104,47 @@ h1,h2,h3,h4,h5,.subtitle-1,.subtitle-2,.body-1,.body-2 {
   color:rgba(0,0,0,0.87)
 }
 h1{
-  font-size:96px;
-  font-weight:900;
+  font-size:76px;
+  font-weight:300;
   letter-spacing:-.0156rem;
   line-height:7rem;
   text-transform: none
 }
+
 h2 {
-  font-size:60px;
+  font-size:55px;
   font-weight:300;
   letter-spacing:-.0083rem;
   line-height: 4.5rem;
   text-transform: none
 }
+
+@media(max-width:768px) {
+  h1{
+      font-size: 55px;
+      line-height:4rem;
+
+  }
+.text-h2{
+      font-size:48px;
+      line-height: 3rem;
+  }
+}
+@media(max-width:567px) {
+  h1{
+      font-size: 35px;
+      line-height:3rem;
+
+  }
+
+.text-h2{
+      font-size:48px;
+      line-height: 3rem;
+  }
+}
+
 h3 {
-  font-size:48px;
+  font-size:45px;
   font-weight:400;
   letter-spacing:0;
   line-height: 3.5rem;
@@ -265,6 +297,13 @@ h6 {
   line-height: 1.72rem;
   text-transform: none
 }
+.f-22-600 {
+  font-size:22px;
+  font-weight: 600;
+  letter-spacing: .0188rem;
+  line-height: 1.72rem;
+  text-transform: none
+}
 .f-24-400{
   font-size:25px;
   font-weight: 400;
@@ -295,12 +334,25 @@ h6 {
 }
 .f-28-600{
   font-size:28px;
+  letter-spacing: .024rem;
+  line-height: 3.2rem;
+  text-transform: none;
+  font-weight: 600;
+}
+.f-28-400{
+  font-size:32px;
+  font-weight: 400;
+  letter-spacing: .024rem;
+  line-height: 3.2rem;
+  text-transform: none
+}
+.f-32-600{
+  font-size:32px;
   letter-spacing: .022rem;
   line-height: 2.8rem;
   text-transform: none;
   font-weight: 600;
 }
-
 .f-70-600{
   font-size:71px;
   letter-spacing: .04rem;
@@ -346,3 +398,4 @@ h6 {
 .clearfix{
 clear:both
 }
+

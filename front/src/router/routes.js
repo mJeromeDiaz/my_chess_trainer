@@ -11,6 +11,7 @@ const routes = [
   },
   {
     path: "/dashboard",
+    meta: { auth: true },
     component: () => import("layouts/DashboardLayout.vue"),
     children: [
       { path: "", component: () => import("pages/Dashboard/Index.vue") },
