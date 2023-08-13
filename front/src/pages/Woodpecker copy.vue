@@ -1,16 +1,59 @@
 <template>
-  <section id="board" class="">
-    <div ref="chessground" id="chessground"></div>
-  </section>
+  <div class="container-semi-fluid column" style="height: 100vh">
+    <h2 class="title q-mb-none">WoodPecker</h2>
+    <div class="row q-gutter-md">
+
+      <section id="board" class="" >
+        <div ref="chessground" id="chessground"></div>
+      </section>
+
+
+        <section id="sidebar" class="text-left">
+          <div class="text-h5">{{ puzzleIteration }} / {{ puzzles.length }} puzzles</div>
+          <div class="text-h1">
+            <div class=""><span id="globalTimer"></span>
+          </div>
+
+        </div>
+        <div>
+            <successGraph></successGraph>
+        </div>
+        <div>Id : {{ puzzle.lichessId }}</div>
+        <div>Url puzzle : <a target="_blank" :href="'https://lichess.org/training/'+ puzzle.lichessId" title="lien vers le puzzle">lien vers le puzzle</a></div>
+        <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
+        <div v-if="solution || error" class="q-mt-md">
+          <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
+            <template v-slot:action>
+              <div v-if="error">
+                <q-btn flat color="white" label="Réessayer" @click="load()" />
+                <q-btn flat color="white" label="Voir la solution" @click="lookSolution()"/>
+                <q-btn flat color="white" label="Passer" @click="next()"/>
+              </div>
+              <div v-if="solution">
+                <q-btn flat color="white" label="Réessayer" @click="load()" />
+                <q-btn flat color="white" label="Revoir la solution" @click="lookSolution()"/>
+                <q-btn flat color="white" label="Passer" @click="next()" v-if="puzzleIteration === puzzles.length"/>
+              </div>
+            </template>
+          </q-banner>
+        </div>
+      </section>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Chess, SQUARES } from 'chess.js'
 import { Chessground } from 'chessground';
-import '../../../node_modules/chessground/assets/chessground.base.css';
-import '../../../node_modules/chessground/assets/chessground.brown.css';
-import '../../../node_modules/chessground/assets/chessground.cburnett.css';
+import '../../node_modules/chessground/assets/chessground.base.css';
+import '../../node_modules/chessground/assets/chessground.brown.css';
+import '../../node_modules/chessground/assets/chessground.cburnett.css';
+import axios from 'axios';
+import successGraph from './woodpecker/successGraph.vue'
+
+import { woodpeckerStore } from '../stores/woodpecker.js'
+const store = woodpeckerStore()
 
 /**
  * Init varaibles
@@ -19,21 +62,13 @@ let chessground = ref(null);
 let game = ''
 let board = ''
 
-const props = defineProps({
-  puzzle: {
-    type: Object,
-    default() {
-      return {}
-    }
-  }
-})
-
-watch(() => props.puzzle, (currentState, prevState) => {
-  reset()
-  load()
-}, { deep: true })
-
-const emit = defineEmits(['isSuccessful'])
+/**
+ * Puzzles life
+ */
+// a récupérer de l'api
+let puzzles = ref([])
+let puzzleIteration = ref(0)
+let puzzle = ref('')
 
 /**
  * Puzzle life
@@ -48,14 +83,17 @@ function reset() {
   solution.value = false
   error.value = false
 
-  moveArray.value = props.puzzle.moves.split(' ')
-  game = new Chess(props.puzzle.fen)
+
+  puzzle.value = puzzles.value[puzzleIteration.value]
+  moveArray.value = puzzle.value.moves.split(' ')
+  game = new Chess(puzzle.value.fen)
+  // timer(document.getElementById("timer"), 0)
 }
 
 function load(){
   reset()
   board = new Chessground(chessground.value, {
-    fen: props.puzzle.fen,
+    fen: puzzle.value.fen,
     orientation: game._turn !== 'w' ? 'white' : 'black',
     turnColor: game._turn === 'w' ? 'white' : 'black',
     highlight: {
@@ -117,7 +155,12 @@ function robotTurn(){
     }, waintingTime);
 }
 
-
+function next(){
+  error.value = false
+  solution.value = false
+  puzzleIteration.value = puzzleIteration.value + 1
+  load()
+}
 
 function humanTurn(){
   return (origin, dest) => {
@@ -129,11 +172,25 @@ function humanTurn(){
 
       // le puzzle est terminé
       if(moveIteration.value === moveArray.value.length) {
+        puzzleIteration.value = puzzleIteration.value + 1
+
+        if(puzzleIteration.value === puzzles.value.length) {
+          // la session est terminée
+          let audio = new Audio('sound/successfullyEndSession.mp3')
+          audio.play()
 
 
-        let audio = new Audio('sound/puzzleIsDone.mp3')
-        audio.play()
-        emit('isSuccessful', !error.value)
+        } else {
+          let storePuzzle = store.puzzles.find(el => el.id = puzzle.value.id)
+          // le puzzle est Correct
+          if(storePuzzle?.isSuccessful !== false) {
+            storePuzzle.isSuccessful = true
+          }
+          let audio = new Audio('sound/puzzleIsDone.mp3')
+          audio.play()
+
+          setTimeout(() => load(), waintingTime);
+        }
 
       } else {
         board.set({
@@ -148,11 +205,10 @@ function humanTurn(){
       }
     } else {
       // le puzzle est raté
+      store.puzzles.find(el => el.id = puzzle.value.id).isSuccessful = false
       let audio = new Audio('sound/puzzleIsMissed.mp3')
       audio.play()
       error.value = true
-      emit('isSuccessful', !error.value)
-
     }
   }
 }
@@ -164,7 +220,7 @@ function lookSolution(){
     solution.value = true
 
     board = Chessground(chessground.value, {
-    fen: props.puzzle.fen,
+    fen: puzzle.value.fen,
     orientation: game._turn !== 'w' ? 'white' : 'black',
     turnColor: game._turn === 'w' ? 'white' : 'black',
     highlight: {
@@ -235,6 +291,9 @@ function isPromotion(orig, dest) {
 }
 
 
+
+
+
 function timer(where, tps){
   where.innerText = '00:00'
 
@@ -250,8 +309,19 @@ function timer(where, tps){
   }, 1000)
 }
 
-onMounted(()=>{
-  load()
+function getPuzzles() {
+  return axios.get(`${process.env.API_URL}puzzles?page=1`).then(response=>{
+    puzzles.value = response.data['hydra:member'] || response.data
+    store.puzzles = response.data['hydra:member'] || response.data
+    store.startedAt = new Date()
+  })
+}
+
+onMounted(() => {
+  getPuzzles().then(()=>{
+    load()
+    timer(document.getElementById("globalTimer"), 0)
+  })
 })
 
 
@@ -259,6 +329,6 @@ onMounted(()=>{
 <style lang="scss">
 cg-board {
   border-radius: 6px;
-  background: #bfd1dd url(../../../public/bg/blue.svg);
+  background: #bfd1dd url(../../public/bg/blue.svg);
 }
 </style>

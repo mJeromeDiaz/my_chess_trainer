@@ -21,7 +21,7 @@
     </div>
 
     <div class="col">
-      <puzzleComponent :puzzle="puzzle" @isSuccessful="isSuccessful"></puzzleComponent>
+      <puzzleBoard :puzzle="puzzle" @isSuccessful="isSuccessful"></puzzleBoard>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-import puzzleComponent from "../components/puzzle/puzzle.vue";
+import puzzleBoard from "../components/puzzle/Board.vue";
 import { loadRouteLocation } from 'vue-router';
 
 /**

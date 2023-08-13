@@ -6,12 +6,12 @@ use App\Repository\PuzzleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
-#[ApiResource(paginationMaximumItemsPerPage: 100)]
+#[ApiResource(attributes: ["pagination_client_items_per_page" => true, "pagination_items_per_page" => 10])]
 class Puzzle
 {
     #[ORM\Id]
