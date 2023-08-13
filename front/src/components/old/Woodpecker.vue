@@ -24,7 +24,7 @@
 import { ref, onMounted } from "vue";
 import { Chessground } from "chessground";
 import { Chess, SQUARES } from "chess.js";
-import { toColor, isPromotion, toDests } from "./Utils.js";
+import { toColor, isPromotion, toDests } from "../Utils.js";
 
 const puzzles = [
   {
