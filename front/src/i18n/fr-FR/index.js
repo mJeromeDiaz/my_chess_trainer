@@ -1,5 +1,4 @@
+import puzzle from './puzzle'
 export default {
-    failed: "Action failed",
-    success: "Action was successful",
-    retry: "Réessayer",
-};
+  ...puzzle,
+}

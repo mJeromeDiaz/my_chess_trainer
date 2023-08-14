@@ -1,16 +1,29 @@
 <template>
-  <section id="board" class="">
+  <section id="board" class="q-mt-md">
     <div ref="chessground" id="chessground"></div>
+    <div style="height:40px" class="">
+      <div v-if="error || solution" class="q-gutter-sm">
+        <q-btn flat class="btn" color="white" :label="t('retry')" @click="load()" />
+        <q-btn flat class="btn" color="white" :label="t(solution ? 'recheckSolution' : 'checkSolution')" @click="lookSolution()"/>
+        <q-btn flat class="btn" color="white" :label="t('next')" @click="next()"/>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+
+import { useI18n } from "vue-i18n";
+
 import { Chess, SQUARES } from 'chess.js'
 import { Chessground } from 'chessground';
+
 import '../../../node_modules/chessground/assets/chessground.base.css';
 import '../../../node_modules/chessground/assets/chessground.brown.css';
 import '../../../node_modules/chessground/assets/chessground.cburnett.css';
+
+const { t } = useI18n();
 
 /**
  * Init varaibles
@@ -38,10 +51,11 @@ const emit = defineEmits(['isSuccessful'])
 /**
  * Puzzle life
  */
+let waintingTime = 200
 let moveIteration = ref(0)
 let moveArray  = ref([])
 let error = ref(false)
-let waintingTime = 200
+let solution = ref(false)
 
 function reset() {
   moveIteration.value = 0
@@ -157,7 +171,6 @@ function humanTurn(){
   }
 }
 
-let solution = ref(false)
 function lookSolution(){
     reset()
     error.value = false
@@ -260,5 +273,9 @@ onMounted(()=>{
 cg-board {
   border-radius: 6px;
   background: #bfd1dd url(../../../public/bg/blue.svg);
+}
+
+.btn{
+  background: rgb(255, 255, 255, 0.03)
 }
 </style>

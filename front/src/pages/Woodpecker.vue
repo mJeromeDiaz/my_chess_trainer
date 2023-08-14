@@ -12,26 +12,9 @@
         <div class="text-h1">
           <div class=""><span id="globalTimer"></span></div>
         </div>
+
         <successGraph></successGraph>
-        <div>Id : {{ puzzle.lichessId }}</div>
-        <div>Url puzzle : <a target="_blank" :href="'https://lichess.org/training/'+ puzzle.lichessId" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <div>Url partie: <a :href="puzzle.gameUrl" title="lien vers le puzzle">lien vers le puzzle</a></div>
-        <div v-if="solution || error" class="q-mt-md">
-          <q-banner inline-actions class="text-white" :class="error ? 'bg-red' : 'bg-primary'">
-            <template v-slot:action>
-              <div v-if="error">
-                <q-btn flat color="white" label="Réessayer" @click="load()" />
-                <q-btn flat color="white" label="Voir la solution" @click="lookSolution()"/>
-                <q-btn flat color="white" label="Passer" @click="next()"/>
-              </div>
-              <div v-if="solution">
-                <q-btn flat color="white" label="Réessayer" @click="load()" />
-                <q-btn flat color="white" label="Revoir la solution" @click="lookSolution()"/>
-                <q-btn flat color="white" label="Passer" @click="next()" v-if="puzzleIteration === puzzles.length"/>
-              </div>
-            </template>
-          </q-banner>
-        </div>
+
       </section>
     </div>
   </div>
