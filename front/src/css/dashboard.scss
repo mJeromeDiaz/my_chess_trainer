@@ -39,4 +39,28 @@
     background: rgb(34, 39, 46);
     color: rgb(173, 186, 199);
   }
+  .q-separator{
+    background: rgb(118, 131, 144, 0.22)
+  }
+
+  caption{
+    width: 100%;
+    text-align: left;
+    color: rgb(118, 131, 144);
+  }
+
+
+  /** FORM **/
+  .q-field--outlined .q-field__control::before {
+    border-radius: 6px;
+    border-color: #444c56
+  }
+  .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input {
+    color: rgb(118, 131, 144);
+    transition: 0.3s ease;
+  }
+  .q-field__native:focus, .q-field__prefix:focus, .q-field__suffix:focus, .q-field__input:focus,
+  .q-field__native:active, .q-field__prefix:active, .q-field__suffix:active, .q-field__input:active{
+    color: rgb(205, 217, 229);
+  }
 }

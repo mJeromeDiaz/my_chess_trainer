@@ -12,11 +12,8 @@
       </nav>
 
       <section class="col-xs-12 col-md-6 col-lg-9">
-        <q-card flat class="bg-teal text-white">
-          {{  route.params.current }}
-          <q-card-section class="bg-primary text-white">
-            <component :is="getComponent(route.params.current)"></component>
-          </q-card-section>
+        <q-card flat class="">
+            <component :is="getComponent()"></component>
         </q-card>
       </section>
 
@@ -28,14 +25,19 @@
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router"
 
+import account from "./Settings/account.vue"
+import gameBehavior from "./Settings/gameBehavior.vue";
+
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const getComponent = (name) => import(`./Settings/${name}.vue`);
+const getComponent = () => {
+  return links.find(el => el.label === route.params.current).component
+};
 
 const links = [
-  { label: "account", icon: "person" },
-  { label: "gameBehavior", icon: "sports_esports" }
+  { label: "account", icon: "person", component: account },
+  { label: "gameBehavior", icon: "sports_esports", component: gameBehavior }
 ]
 </script>
