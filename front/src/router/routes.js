@@ -6,7 +6,7 @@ const routes = [
       { path: "", component: () => import("pages/Index.vue") },
       { path: 'woodpecker', component: () => import("pages/Woodpecker.vue") },
       { name: 'puzzle', path: "puzzle/:id", component: () => import("pages/Puzzle.vue") },
-      { name: 'signup', path: "singup", component: () => import("pages/User/Signup.vue") },
+      { name: 'signup', path: "singup", component: () => import("pages/Dashboard/User/Signup.vue") },
     ],
   },
   {
@@ -15,6 +15,7 @@ const routes = [
     component: () => import("layouts/DashboardLayout.vue"),
     children: [
       { path: "", component: () => import("pages/Dashboard/Index.vue") },
+      { name: 'settings', path: "settings/:current", component: () => import("pages/Dashboard/User/Settings.vue") },
     ],
   },
   {

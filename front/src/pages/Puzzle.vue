@@ -1,7 +1,12 @@
 <template>
   <div class="row flex flex-center h-100 container q-col-gutter-lg" v-if="puzzle?.id">
-    <div class="">
+    <div class="row">
       <puzzleBoard :puzzle="puzzle"></puzzleBoard>
+      <div class="col q-mt-lg q-ml-lg">
+        <div>Id : {{ puzzle.lichessId }}</div>
+        <div><a target="_blank" :href="'https://lichess.org/training/'+ puzzle.lichessId" :title="t('puzzleLink')">{{  t('puzzleLink')  }}</a></div>
+        <div><a :href="puzzle.gameUrl" :title="t('gameLink')">{{ t('gameLink') }}</a></div>
+      </div>
     </div>
   </div>
 </template>
@@ -12,8 +17,10 @@ import axios from "axios";
 
 import puzzleBoard from "../components/puzzle/Board.vue";
 
+import { useI18n } from "vue-i18n";
 import { useRoute } from 'vue-router'
 
+const { t } = useI18n();
 const route = useRoute();
 const puzzleId = route.params.id
 

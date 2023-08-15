@@ -16,6 +16,7 @@ export const securityStore = defineStore('security', {
   state: () => {
     return {
       user: { roles:[] },
+      preferences: { waintingTime: 200 },
       token:  '',
     }
   },
@@ -23,7 +24,6 @@ export const securityStore = defineStore('security', {
     isAdmin(){
       return this.user.roles[0] === 'ROLE_ADMIN'
     },
-
     logout(){
       axios({
         method: 'GET',

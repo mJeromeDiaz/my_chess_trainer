@@ -14,8 +14,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 
-import { useI18n } from "vue-i18n";
-
 import { Chess, SQUARES } from 'chess.js'
 import { Chessground } from 'chessground';
 
@@ -23,7 +21,11 @@ import '../../../node_modules/chessground/assets/chessground.base.css';
 import '../../../node_modules/chessground/assets/chessground.brown.css';
 import '../../../node_modules/chessground/assets/chessground.cburnett.css';
 
+import { useI18n } from "vue-i18n";
+import { securityStore } from 'src/stores/security';
+
 const { t } = useI18n();
+const security = securityStore()
 
 /**
  * Init varaibles
@@ -51,7 +53,6 @@ const emit = defineEmits(['isSuccessful'])
 /**
  * Puzzle life
  */
-let waintingTime = 200
 let moveIteration = ref(0)
 let moveArray  = ref([])
 let error = ref(false)
@@ -128,7 +129,7 @@ function robotTurn(){
         }
       })
       moveIteration.value = moveIteration.value + 1
-    }, waintingTime);
+    }, security.preferences.waintingTime);
 }
 
 
@@ -218,7 +219,7 @@ function lookSolution(){
           }
         })
         moveIteration.value = moveIteration.value + 1
-      }, i * waintingTime * 1.2);
+      }, i * security.preferences.waintingTime * 1.2);
     })
 }
 

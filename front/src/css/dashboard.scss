@@ -1,0 +1,42 @@
+#dashboard{
+  body {
+    background: #1C2128;
+    color: rgb(173, 186, 199);
+  }
+  .content{
+    background: rgb(34, 39, 46);
+  }
+  nav ul{
+    list-style: none;
+  }
+  nav li{
+    padding: 8px 5px 8px 3px;
+    font-size: 14px;
+    border-radius: 0 5px 5px 0;
+    border-left: 6px solid transparent;
+    transition: 0.3s;
+    margin: 0 0 2px;
+    color: rgb(205, 217, 229, 0.65)
+  }
+  nav li .icon{
+    color: rgb(118, 131, 144, 0.6);
+  }
+
+  nav li:hover{
+    background: rgba(144, 157, 171, 0.12);
+    border-left-color: rgb(118, 131, 144, 0.22);
+    color: rgb(205, 217, 229)
+  }
+  nav li.active{
+    background: rgba(144, 157, 171, 0.12);
+    color: rgb(205, 217, 229);
+    border-left-color: $primary;
+  }
+  nav li.active .icon{
+    color: rgb(118, 131, 144);
+  }
+  .q-card{
+    background: rgb(34, 39, 46);
+    color: rgb(173, 186, 199);
+  }
+}

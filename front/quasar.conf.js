@@ -24,7 +24,7 @@ module.exports = configure(function (ctx) {
     boot: ["i18n", "axios", 'pinia'],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ["app.scss", "bootstrap.css"],
+    css: ["app.scss", "dashboard.scss", "bootstrap.css"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [

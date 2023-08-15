@@ -1,19 +1,22 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header reveal class="bg text-white">
-      <q-toolbar class="">
+    <div id="dashboard">
+
+      <q-header reveal class="text-white">
+        <q-toolbar class="">
           <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
           <q-toolbar-title class="text-bold">My Chess Trainer</q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+        </q-toolbar>
+      </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" side="left" overlay elevated class="bg-grey-10">
+      <q-drawer v-model="leftDrawerOpen" side="left" overlay elevated class="bg-dark">
       <!-- drawer content -->
-    </q-drawer>
+      </q-drawer>
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+      <q-page-container class="content">
+        <router-view />
+      </q-page-container>
+    </div>
   </q-layout>
 </template>
 
@@ -25,3 +28,9 @@ function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 </script>
+
+<style scoped>
+.bg-dark-dashboard{
+  background: #22272E;
+}
+</style>
