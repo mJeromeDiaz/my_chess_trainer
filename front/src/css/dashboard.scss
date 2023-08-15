@@ -1,10 +1,24 @@
+$text-ddark : rgb(173, 186, 199) !important;
+$bg-ddark :rgb(28, 33, 40) !important;
+$bg-ddark-light : rgb(34, 39, 46);
+$text-ddark-accent : rgb(205, 217, 229);
+$text-ddark-accent-light : rgb(205, 217, 229, 0.65);
+$caption-ddark : rgb(118, 131, 144);
+
+.bg-ddark {
+  background-color: $bg-ddark;
+}
+.text-ddark {
+  color: $text-ddark;
+}
+
 #dashboard{
   body {
-    background: #1C2128;
-    color: rgb(173, 186, 199);
+    background: $bg-ddark;
+    color: $text-ddark;
   }
   .content{
-    background: rgb(34, 39, 46);
+    background: $bg-ddark-light;
   }
   nav ul{
     list-style: none;
@@ -16,7 +30,7 @@
     border-left: 6px solid transparent;
     transition: 0.3s;
     margin: 0 0 2px;
-    color: rgb(205, 217, 229, 0.65)
+    color: $text-ddark-accent-light
   }
   nav li .icon{
     color: rgb(118, 131, 144, 0.6);
@@ -25,42 +39,45 @@
   nav li:hover{
     background: rgba(144, 157, 171, 0.12);
     border-left-color: rgb(118, 131, 144, 0.22);
-    color: rgb(205, 217, 229)
+    color: $text-ddark-accent
   }
   nav li.active{
     background: rgba(144, 157, 171, 0.12);
-    color: rgb(205, 217, 229);
+    color: $text-ddark-accent;
     border-left-color: $primary;
   }
   nav li.active .icon{
-    color: rgb(118, 131, 144);
+    color: $caption-ddark;
   }
   .q-card{
-    background: rgb(34, 39, 46);
-    color: rgb(173, 186, 199);
+    background: rgb(41, 46, 54);
+    color: $text-ddark;
   }
   .q-separator{
     background: rgb(118, 131, 144, 0.22)
   }
-
-  caption{
-    width: 100%;
-    text-align: left;
-    color: rgb(118, 131, 144);
+  .q-btn-group>.q-btn{
+    background: $bg-ddark-light
   }
 
 
+
   /** FORM **/
+  caption{
+    width: 100%;
+    text-align: left;
+    color: $caption-ddark;
+  }
   .q-field--outlined .q-field__control::before {
     border-radius: 6px;
     border-color: #444c56
   }
   .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input {
-    color: rgb(118, 131, 144);
+    color: $caption-ddark;
     transition: 0.3s ease;
   }
   .q-field__native:focus, .q-field__prefix:focus, .q-field__suffix:focus, .q-field__input:focus,
   .q-field__native:active, .q-field__prefix:active, .q-field__suffix:active, .q-field__input:active{
-    color: rgb(205, 217, 229);
+    color: $text-ddark-accent;
   }
 }

@@ -12,9 +12,9 @@
       </nav>
 
       <section class="col-xs-12 col-md-6 col-lg-9">
-        <q-card flat class="">
-            <component :is="getComponent()"></component>
-        </q-card>
+        <transition name="slide-fade" appear mode="out-in">
+          <component :is="getComponent()"></component>
+        </transition>
       </section>
 
     </div>
@@ -27,6 +27,7 @@ import { useRoute, useRouter } from "vue-router"
 
 import account from "./Settings/account.vue"
 import gameBehavior from "./Settings/gameBehavior.vue";
+import template from "./Settings/template.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -38,6 +39,22 @@ const getComponent = () => {
 
 const links = [
   { label: "account", icon: "person", component: account },
-  { label: "gameBehavior", icon: "sports_esports", component: gameBehavior }
+  { label: "gameBehavior", icon: "sports_esports", component: gameBehavior },
+  { label: "template", icon: "palette", component: template }
 ]
 </script>
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+</style>

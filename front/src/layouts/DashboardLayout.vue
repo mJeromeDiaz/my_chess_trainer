@@ -2,7 +2,7 @@
   <q-layout view="hHh LpR fFf">
     <div id="dashboard">
 
-      <q-header reveal class="text-white">
+      <q-header reveal class="bg-ddark text-white">
         <q-toolbar class="">
           <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
           <q-toolbar-title class="text-bold">My Chess Trainer</q-toolbar-title>
